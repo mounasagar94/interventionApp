@@ -1,9 +1,78 @@
 <!doctype html>
-<html>
+<html ng-app="ui.bootstrap.demo">
 <head>
-
+    {% load static %}
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-animate.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-sanitize.js"></script>
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <p>Hello</p
+    <div class="container">
+    <div ng-controller="ModalDemoCtrl as $ctrl">
+        <script type="text/ng-template" id="myModalContent.html">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">A new Intervention</h3>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <form ng-submit="$ctrl.interventionAdd()">
+                    <div class="form-group">
+                        <label for="formGroupExampleInput">Label</label>
+                        <input type="text" ng-model="labelInput" class="form-control" placeholder="Name">
+                    </div>
+                    <div class="form-group">
+                      <label for="formGroupExampleInput">Name</label>
+                      <input type="text" ng-model="nameInput" class="form-control" placeholder="Name">
+                    </div>
+                    <div class="form-group">
+                      <label for="formGroupExampleInput2">Description</label>
+                      <textarea id="description" ng-model="descInput" class="form-control"  name="description" rows="4" cols="50" placeholder="Description...."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="formGroupExampleInput3">Place</label>
+                        <input type="text" ng-model="placeInput" class="form-control"  placeholder="Place">
+                    </div>
+                    <div class="form-group">
+                    <label for="start">Date:</label>
+                    <input type="date" ng-model="dateInput" class="form-control" name="intervention-date">
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="button"  ng-click="$ctrl.saveData()">Submit</button>
+                <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+            </div>
+        </form>
+        </script>
+        <caption><button type="button" class="btn btn-success" ng-click="$ctrl.open()"><i class="fa-solid fa-square-plus"></i> intervention</button></caption>
+    </div>
+        <table ng-controller="crudController"> 
+              <tr>
+                <th scope="col">Label</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">PLace</th>
+                <th scope="col">Date</th>
+                <th scope="col">State</th>
+                <th scope="col"></th>
+              </tr>
+              <tr ng-repeat="interv in interventions">
+                <td ng-model="interv.label"><span ng-bind="interv.label"></span></td>
+                <td ng-model="interv.name"><span ng-bind="interv.name"></span></td>
+                <td ng-model="interv.description"><span ng-bind="interv.description"></span></td>
+                <td ng-model="interv.place"><span ng-bind="interv.place"></span></td>
+                <td ng-model="interv.date"><span ng-bind="interv.date"></span></td>
+                <td ng-model="interv.state"><span ng-bind="interv.state" class="badge badge-success"></span></td>
+                <td class="btnTd">
+                    <button type="button" class="btn btn-warning" ng-click="$ctrl.open()"><i class="fa-solid fa-pen-to-square"></i></button>
+                    <button type="button" class="btn btn-danger" ng-click="$ctrl.open()"><i class="fa-solid fa-trash"></i></button>
+                </td>
+              </tr>
+          </table>
+        </div>
+    <script src="{% static 'js/intervention.js' %}"></script>
 </body>
+
 </html>
