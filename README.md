@@ -25,5 +25,5 @@ Follow these steps to setup this application
 ##### Also you need to create a new postgres database, and then change the database variables in the settings.py file:
 follow the steps in this link  [Create Database](https://medium.com/coding-blocks/creating-user-database-and-adding-access-on-postgresql-8bfcd2f4a91e)
 
-###### To run the application : 
+#### To run the application : 
 `djando-admin runserver`
