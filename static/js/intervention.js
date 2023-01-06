@@ -1,8 +1,7 @@
 angular.module('ui.bootstrap.demo', ['ngAnimate', 'ngSanitize', 'ui.bootstrap']);
 angular.module('ui.bootstrap.demo').controller('ModalDemoCtrl', function ($uibModal, $log, $document) {
-  var $ctrl = this;
-  $ctrl.items = ['item1', 'item2', 'item3'];
 
+  var $ctrl = this;
   $ctrl.animationsEnabled = true;
 
   $ctrl.open = function (size, parentSelector) {
@@ -17,11 +16,6 @@ angular.module('ui.bootstrap.demo').controller('ModalDemoCtrl', function ($uibMo
       controllerAs: '$ctrl',
       size: size,
       appendTo: parentElem,
-      resolve: {
-        items: function () {
-          return $ctrl.items;
-        }
-      }
     });
 
     modalInstance.result.then(function (selectedItem) {
@@ -31,82 +25,35 @@ angular.module('ui.bootstrap.demo').controller('ModalDemoCtrl', function ($uibMo
     });
   };
 
-  $ctrl.openComponentModal = function () {
-    var modalInstance = $uibModal.open({
-      animation: $ctrl.animationsEnabled,
-      component: 'modalComponent',
-      resolve: {
-        items: function () {
-          return $ctrl.items;
-        }
-      }
-    });
-
-    modalInstance.result.then(function (selectedItem) {
-      $ctrl.selected = selectedItem;
-    }, function () {
-      $log.info('modal-component dismissed at: ' + new Date());
-    });
-  };
-
-  $ctrl.openMultipleModals = function () {
-    $uibModal.open({
-      animation: $ctrl.animationsEnabled,
-      ariaLabelledBy: 'modal-title-bottom',
-      ariaDescribedBy: 'modal-body-bottom',
-      templateUrl: 'stackedModal.html',
-      size: 'sm',
-      controller: function($scope) {
-        $scope.name = 'bottom';  
-      }
-    });
-
-    $uibModal.open({
-      animation: $ctrl.animationsEnabled,
-      ariaLabelledBy: 'modal-title-top',
-      ariaDescribedBy: 'modal-body-top',
-      templateUrl: 'stackedModal.html',
-      size: 'sm',
-      controller: function($scope) {
-        $scope.name = 'top';  
-      }
-    });
-  };
-  $ctrl.interventionAdd = function() {
-    console.log('add data')
-    $scope.interventions.push({label: $scope.labelInput, name: $scope.nameInput, description: $scope.descInput, place: $scope.placeInput, date: $scope.dateInput, state: 'draft'});
-    
-};
-
-$ctrl.saveData = function() {
-    console.log('save data')
-    var data = {label: $scope.labelInput, name: $scope.nameInput, description: $scope.descInput, place: $scope.placeInput, date: $scope.dateInput, state: 'draft'}
-    $http.put('/intervention/api/', data)
-    $ctrl.dismiss({$value: 'cancel'});
-}
-
-  $ctrl.toggleAnimation = function () {
-    $ctrl.animationsEnabled = !$ctrl.animationsEnabled;
-  };
 });
 
 // Please note that $uibModalInstance represents a modal window (instance) dependency.
 // It is not the same as the $uibModal service used above.
 
-angular.module('ui.bootstrap.demo').controller('ModalInstanceCtrl', function ($uibModalInstance, items) {
+angular.module('ui.bootstrap.demo').controller('ModalInstanceCtrl', function ($uibModalInstance, $http, $scope) {
   var $ctrl = this;
-  $ctrl.items = items;
-  $ctrl.selected = {
-    item: $ctrl.items[0]
-  };
 
-  $ctrl.ok = function () {
-    $uibModalInstance.close($ctrl.selected.item);
-  };
-
+  // $ctrl.ok = function () {
+  //   $uibModalInstance.close($ctrl.selected.item);
+  // };
   $ctrl.cancel = function () {
     $uibModalInstance.dismiss('cancel');
   };
+
+  $ctrl.saveData = function($scope) {
+    console.log('save data')
+    var data = {
+      label: document.getElementById("labelInput").value,
+      name: document.getElementById("nameInput").value,
+      description: document.getElementById("descInput").value,
+      place: document.getElementById("placeInput").value,
+      date: document.getElementById("dateInput").value,
+      state: 'draft'
+    }
+    console.log('reponse', data)
+    $http.put('/intervention/api/', data)
+    $uibModalInstance.close();
+}
 });
 
 // Please note that the close and dismiss bindings are from $uibModalInstance.
@@ -122,19 +69,22 @@ angular.module('ui.bootstrap.demo').component('modalComponent', {
     var $ctrl = this;
 
     $ctrl.$onInit = function () {
-      $ctrl.items = $ctrl.resolve.items;
-      $ctrl.selected = {
-        item: $ctrl.items[0]
-      };
     };
 
     $ctrl.ok = function () {
-      $ctrl.close({$value: $ctrl.selected.item});
+      $ctrl.close();
     };
 
     $ctrl.cancel = function () {
       $ctrl.dismiss({$value: 'cancel'});
     };
+
+    $ctrl.saveData = function() {
+      console.log('save data')
+      var data = {label: $scope.labelInput, name: $scope.nameInput, description: $scope.descInput, place: $scope.placeInput, date: $scope.dateInput, state: 'draft'}
+      $http.put('/intervention/api/', data)
+      $uibModalInstance.close();
+  }
   }
 });
 
@@ -153,5 +103,23 @@ angular.module('ui.bootstrap.demo').controller('crudController', function($scope
             $scope.interventions.push(intervention);
         }
     })
+
+    //Delete, this function check if the intervention in state done, so we can delete it
+      $scope.remove = function() {
+        var oldList = $scope.interventions;
+        $scope.List = [];
+        angular.forEach(oldList, function(inter) {
+            if (inter.state == 'done') {
+                $http.delete('/todo/api/' + inter.id + '/');
+            } else {
+                $scope.List.push(inter);
+            }
+        })
+    }
+
+    //editIntervention()
+    // $scope.editIntervention = function(){
+
+    // }
    });
 
