@@ -1,5 +1,6 @@
 Intervention App [Angularjs](https://angularjs.org/) & [Djnango](https://www.djangoproject.com/)
 ==================================================================================
+#### <img src="./static/images/Screenshot.png" alt="Alt text" title="Optional title">
 #### Make sure you have these installed on your OS: 
 #### [python2.7](https://www.python.org/)
 #### [Postgesql](https://www.postgresql.org/)
