@@ -19,7 +19,7 @@ Follow these steps to setup this application
 ##### Change your directory to the cloned project:
 `cd interventionApp`
 
-##### Then, install the project prerequisites located in base.txt file ( if are not in the switable directody, you should navigate to /requirements/ ):
+##### Then, install the project prerequisites located in base.txt file ( if you are not in the switable directody, you should navigate to /requirements/ ):
 `pip install -r base.txt`
 
 ##### Also you need to create a new postgres database, and then change the database variables in the settings.py file:
