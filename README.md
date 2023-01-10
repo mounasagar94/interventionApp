@@ -1,4 +1,4 @@
-Intervention App [Angularjs](https://angularjs.org/) & [Djnango](https://www.djangoproject.com/)
+Intervention App [Angularjs](https://angularjs.org/) & [Django](https://www.djangoproject.com/)
 ==================================================================================
 #### <img src="./static/images/Screenshot.png" alt="Alt text" title="Optional title">
 #### Make sure you have these installed on your OS: 
